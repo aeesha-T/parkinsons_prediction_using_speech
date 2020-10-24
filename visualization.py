@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import parselmouth
 
+
 class Visualization:
     """ Methods to visualize the sound samples """
 
@@ -23,3 +24,7 @@ class Visualization:
         plt.ylabel("amplitude")
         plt.title('Sound wave plot for ' + filename)
         plt.show()
+
+
+    #def heatmap_visualization():
+        
