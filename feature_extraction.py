@@ -1,11 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import librosa 
-import librosa.display
-import IPython.display as ipd
+#import librosa 
+#import librosa.display
+#import IPython.display as ipd
 import parselmouth
-import seaborn as sns
+#import seaborn as sns
 from parselmouth.praat import call
 import glob
 import os.path
