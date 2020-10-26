@@ -72,3 +72,38 @@ class Feature_Extraction:
 
         return mfcc
 
+    def extract_features_from_folder(self, folder_path):
+        file_list = []
+        mean_F0_list = []
+        sd_F0_list = []
+        hnr_list = []
+        localJitter_list = []
+        localabsoluteJitter_list = []
+        rapJitter_list = []
+        ppq5Jitter_list = []
+        localShimmer_list = []
+        localdbShimmer_list = []
+        apq3Shimmer_list = []
+        aqpq5Shimmer_list = []
+        for file in glob.glob(folder_path):
+            (meanF0, stdevF0, hnr, localJitter, localabsoluteJitter, rapJitter, ppq5Jitter, localShimmer, localdbShimmer, apq3Shimmer, aqpq5Shimmer) = self.extract_acoustic_features(file, 75, 500, "Hertz") 
+            file_list.append(file) # make an ID list
+            mean_F0_list.append(meanF0) # make a mean F0 list
+            sd_F0_list.append(stdevF0) # make a sd F0 list
+            hnr_list.append(hnr)
+            localJitter_list.append(localJitter)
+            localabsoluteJitter_list.append(localabsoluteJitter)
+            rapJitter_list.append(rapJitter)
+            ppq5Jitter_list.append(ppq5Jitter)
+            localShimmer_list.append(localShimmer)
+            localdbShimmer_list.append(localdbShimmer)
+            apq3Shimmer_list.append(apq3Shimmer)
+            aqpq5Shimmer_list.append(aqpq5Shimmer)
+        df = pd.DataFrame(np.column_stack([file_list, mean_F0_list, sd_F0_list, hnr_list, localJitter_list, localabsoluteJitter_list, rapJitter_list, ppq5Jitter_list, localShimmer_list, localdbShimmer_list, apq3Shimmer_list, aqpq5Shimmer_list]), columns=['voiceID','meanF0Hz', 'stdevF0Hz', 'HNR', 'localJitter', 'localabsoluteJitter', 'rapJitter', 'ppq5Jitter', 'localShimmer', 'localdbShimmer', 'apq3Shimmer', 'apq5Shimmer'])  
+        return df
+
+    def convert_to_csv(self, df, filename):
+        df.to_csv(filename+".csv", index=False)
+
+
+

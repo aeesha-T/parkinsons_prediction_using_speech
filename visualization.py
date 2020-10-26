@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import parselmouth
-
+import seaborn as sns
 
 def visualize_sound_sample(filename):
     """
@@ -22,5 +22,18 @@ def visualize_sound_sample(filename):
     plt.show()
 
 
-    # def heatmap_visualization():
-        
+def heatmap_visualization(df):
+    """
+    Plots the heatmap of the correlation between the features in the dataframe df
+
+    Parameters:
+    
+    df: the dataframe containing the features
+    """
+
+    for k in list(df):
+        df[k]=pd.to_numeric(df[k], errors='ignore') #ensure the values are in numeric
+
+    corr = df.corr()
+    heat_map = sns.heatmap(corr) 
+            

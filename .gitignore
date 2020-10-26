@@ -3,3 +3,10 @@
 dataset/
 processed_results_2.csv
 processed_results.csv
+processed_results_pd.csv
+nodesDifference.png
+nodesFeature_0.png
+projection_difference.png
+qthresh_clusters.dat
+qthresh_clusters.png
+filename_weights.npy
