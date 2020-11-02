@@ -35,5 +35,5 @@ def heatmap_visualization(df):
         df[k]=pd.to_numeric(df[k], errors='ignore') #ensure the values are in numeric
 
     corr = df.corr()
-    heat_map = sns.heatmap(corr) 
+    sns.heatmap(corr) 
             

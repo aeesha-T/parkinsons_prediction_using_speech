@@ -10,3 +10,6 @@ projection_difference.png
 qthresh_clusters.dat
 qthresh_clusters.png
 filename_weights.npy
+graphs.pdf
+graphs2.pdf
+som_graphs.pdf
