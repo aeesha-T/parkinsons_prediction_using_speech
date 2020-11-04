@@ -32,13 +32,18 @@ plot(som_model, type = "count", main = "Number of Samples per Nodes")
 #U-matrix visualisation????
 plot(som_model, type = "dist.neighbours", main = "SOM neighbour distances")
 
+print(som_model$grid)
+
+# number of instances assigned to each node
+nb <- table(som_model$unit.classif)
+print("number of instances assigned to each node")
+print(nb)
+
 ## See what node each sample is located in
 res <- data.frame(som_model$distances, som_model$unit.classif)
 colnames(res) <- c("distFromClus", "Cluster")
 print("Cluster each sample belongs to")
 print(res)
-
-print("end")
 
 #Weight Vector View
 plot(som_model, type = "codes")
