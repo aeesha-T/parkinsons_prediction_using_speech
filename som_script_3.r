@@ -20,7 +20,7 @@ som_model <- som(data_train_matrix,
 print(som_model)
 
 ##### Measures ########
-iterations <- 15
+iterations <- 10
 data_total <- data[, -c(1)]
 accuracy_table <- NULL
 #Loop through iterations
@@ -48,6 +48,7 @@ for (i in 1:37) {
                 rlen = 100)
 
     pred <- predict(map1, newdata = testX, whatmap = 1)
+    print(pred$predictions)
     predicted_y <- classmat2classvec(pred$predictions[[2]])
     #print(predicted_y)
     #print(data.frame(i, Y, predicted_y))
@@ -64,7 +65,7 @@ for (i in 1:37) {
     #                    predicted = som.prediction$unit.classif)
     #                    print(error.df)
 }
-#print(prediction_table)
+print(prediction_table)
 accuracy_value <- accuracy / 37
 print(accuracy_value)
 #populate accuracy table
@@ -75,18 +76,18 @@ print(accuracy_table)
 
 
 #plot the graph
-# pdf("C:/Users/Aeesha/Documents/CMU/Research/Code/Research_Project/results_11.pdf", height = 15, width = 10)
-# title <- paste("Quantization Error")
-# grid::grid.text(title,x = (0.5), y = (0.99))
-# grid.table(output)
-# plot(output)
+pdf("C:/Users/Aeesha/Documents/CMU/Research/Code/Research_Project/OneHoldOutEvaluation.pdf", height = 15, width = 10)
+title <- paste("Accuracy Table")
+grid::grid.text(title, x = (0.5), y = (0.99))
+grid.table(accuracy_table)
+plot(accuracy_table)
 # grid::grid.newpage()
 # title <- paste("Confusion Matrix Accuracy")
 # grid::grid.text(title,x = (0.5), y = (0.99))
 # grid.table(confusion_table)
 # plot(confusion_table)
 
-#dev.off()
+dev.off()
 
 
 
