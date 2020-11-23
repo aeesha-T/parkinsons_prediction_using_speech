@@ -1,6 +1,5 @@
 .venv/
 .vscode/
-dataset/
 processed_results_2.csv
 processed_results.csv
 processed_results_pd.csv
