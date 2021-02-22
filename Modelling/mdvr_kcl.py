@@ -12,6 +12,7 @@ from sklearn.feature_selection import SelectFromModel
 from sklearn.model_selection import cross_val_predict
 from sklearn.model_selection import KFold
 import seaborn as sns
+from sklearn import tree
 
 df = pd.read_csv(r"./readtext.csv")
 #print(df)
@@ -52,17 +53,22 @@ model_knn.fit(X_train, y_train)
 model_svm = svm.SVC()
 model_svm.fit(X_train, y_train)
 
-model_rf = RandomForestClassifier(max_depth=10, random_state=0)
+model_rf = RandomForestClassifier(max_depth=15, random_state=0)
 model_rf.fit(X_train, y_train)
 
 model_gb = GradientBoostingClassifier(random_state=0)
-model_gb.fit(X_train, y_train)
+model_gb = model_gb.fit(X_train, y_train)
+
+model_dt = tree.DecisionTreeClassifier()
+model_dt = model_dt.fit(X_train, y_train)
+
 
 #predict
 y_pred_knn = model_knn.predict(X_test)
 y_pred_svm = model_svm.predict(X_test)
 y_pred_rf = model_rf.predict(X_test)
 y_pred_gb = model_gb.predict(X_test)
+y_pred_dt = model_dt.predict(X_test)
 
 
 #confusion matrix
@@ -70,21 +76,24 @@ conf_matrix_knn = confusion_matrix(y_test, y_pred_knn)
 conf_matrix_svm = confusion_matrix(y_test, y_pred_svm)
 conf_matrix_rf = confusion_matrix(y_test, y_pred_rf)
 conf_matrix_gb = confusion_matrix(y_test, y_pred_gb)
+conf_matrix_dt = confusion_matrix(y_test, y_pred_dt)
 print(conf_matrix_knn)
 print(conf_matrix_svm)
 print(conf_matrix_rf)
 print(conf_matrix_gb)
-
+print(conf_matrix_dt)
 
 #accuracy
 accuracy_knn = ((conf_matrix_knn[0,0] + conf_matrix_knn[1,1])/(conf_matrix_knn[0,0] +conf_matrix_knn[0,1]+conf_matrix_knn[1,0]+conf_matrix_knn[1,1]))*100
 accuracy_svm = ((conf_matrix_svm[0,0] + conf_matrix_svm[1,1])/(conf_matrix_svm[0,0] +conf_matrix_svm[0,1]+conf_matrix_svm[1,0]+conf_matrix_svm[1,1]))*100
 accuracy_rf = ((conf_matrix_rf[0,0] + conf_matrix_rf[1,1])/(conf_matrix_rf[0,0] +conf_matrix_rf[0,1]+conf_matrix_rf[1,0]+conf_matrix_rf[1,1]))*100
 accuracy_gb = ((conf_matrix_gb[0,0] + conf_matrix_gb[1,1])/(conf_matrix_gb[0,0] +conf_matrix_gb[0,1]+conf_matrix_gb[1,0]+conf_matrix_gb[1,1]))*100
+accuracy_dt = ((conf_matrix_dt[0,0] + conf_matrix_dt[1,1])/(conf_matrix_dt[0,0] +conf_matrix_dt[0,1]+conf_matrix_dt[1,0]+conf_matrix_dt[1,1]))*100
 print(accuracy_knn)
 print(accuracy_svm)
 print(accuracy_rf)
 print(accuracy_gb)
+print(accuracy_dt)
 
 ################ applying cross validation using scikit learn################
 df_X = sc.fit_transform(df_X)
@@ -106,7 +115,7 @@ print("Confusion Matrix for SVM using k-fold (leave one out)")
 print(conf_matrix_svm_kfold)
 
 #RF
-model_rf = RandomForestClassifier(max_depth=10, random_state=0)
+model_rf = RandomForestClassifier(max_depth=15, random_state=0)
 y_pred_kfold_rf = cross_val_predict(model_rf, df_X, df_Y, cv=k_fold)
 conf_matrix_rf_kfold = confusion_matrix(df_Y, y_pred_kfold_rf)
 print("Confusion Matrix for RF using k-fold (leave one out)")
@@ -119,6 +128,12 @@ conf_matrix_gb_kfold = confusion_matrix(df_Y, y_pred_kfold_gb)
 print("Confusion Matrix for Gradient Boosting using k-fold (leave one out)")
 print(conf_matrix_gb_kfold)
 
+#Decision Tree
+model_dt_1 = tree.DecisionTreeClassifier()
+y_pred_kfold_dt = cross_val_predict(model_dt_1, df_X, df_Y, cv=k_fold)
+conf_matrix_dt_kfold = confusion_matrix(df_Y, y_pred_kfold_dt)
+print("Confusion Matrix for Decision Tree using k-fold (leave one out)")
+print(conf_matrix_dt_kfold)
 
 
 ######### applying Kfold(one leave out) implementation without using library #####################
@@ -137,3 +152,4 @@ conf_matrix_knn_kfold2 = confusion_matrix(y0, y1)
 ##print(conf_matrix_knn_kfold2)
 
 
+tree.plot_tree(model_dt)
