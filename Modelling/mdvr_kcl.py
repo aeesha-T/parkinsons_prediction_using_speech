@@ -11,6 +11,8 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.feature_selection import SelectFromModel
 from sklearn.model_selection import cross_val_predict
 from sklearn.model_selection import KFold
+from sklearn.linear_model import LogisticRegression
+from sklearn.naive_bayes import GaussianNB
 import seaborn as sns
 from sklearn import tree
 
@@ -47,20 +49,33 @@ print(selected_feat) """
 
 
 # Fit classifier to the Training set
+#KNN
 model_knn = KNeighborsClassifier(n_neighbors = 10)
 model_knn.fit(X_train, y_train)
 
+#SVM
 model_svm = svm.SVC()
 model_svm.fit(X_train, y_train)
 
+#RF
 model_rf = RandomForestClassifier(max_depth=15, random_state=0)
 model_rf.fit(X_train, y_train)
 
+#Gradient Boosting
 model_gb = GradientBoostingClassifier(random_state=0)
 model_gb = model_gb.fit(X_train, y_train)
 
+#Decision Tree
 model_dt = tree.DecisionTreeClassifier()
 model_dt = model_dt.fit(X_train, y_train)
+
+#Logistic Regression
+model_lr = LogisticRegression(random_state=0)
+model_lr = model_lr.fit(X_train, y_train)
+
+#Naive Bayes
+model_nb = GaussianNB()
+model_nb = model_nb.fit(X_train, y_train)
 
 
 #predict
@@ -69,6 +84,8 @@ y_pred_svm = model_svm.predict(X_test)
 y_pred_rf = model_rf.predict(X_test)
 y_pred_gb = model_gb.predict(X_test)
 y_pred_dt = model_dt.predict(X_test)
+y_pred_lr = model_lr.predict(X_test)
+y_pred_nb = model_nb.predict(X_test)
 
 
 #confusion matrix
@@ -77,11 +94,15 @@ conf_matrix_svm = confusion_matrix(y_test, y_pred_svm)
 conf_matrix_rf = confusion_matrix(y_test, y_pred_rf)
 conf_matrix_gb = confusion_matrix(y_test, y_pred_gb)
 conf_matrix_dt = confusion_matrix(y_test, y_pred_dt)
+conf_matrix_lr = confusion_matrix(y_test, y_pred_lr)
+conf_matrix_nb = confusion_matrix(y_test, y_pred_nb)
 print(conf_matrix_knn)
 print(conf_matrix_svm)
 print(conf_matrix_rf)
 print(conf_matrix_gb)
 print(conf_matrix_dt)
+print(conf_matrix_lr)
+print(conf_matrix_nb)
 
 #accuracy
 accuracy_knn = ((conf_matrix_knn[0,0] + conf_matrix_knn[1,1])/(conf_matrix_knn[0,0] +conf_matrix_knn[0,1]+conf_matrix_knn[1,0]+conf_matrix_knn[1,1]))*100
@@ -89,11 +110,17 @@ accuracy_svm = ((conf_matrix_svm[0,0] + conf_matrix_svm[1,1])/(conf_matrix_svm[0
 accuracy_rf = ((conf_matrix_rf[0,0] + conf_matrix_rf[1,1])/(conf_matrix_rf[0,0] +conf_matrix_rf[0,1]+conf_matrix_rf[1,0]+conf_matrix_rf[1,1]))*100
 accuracy_gb = ((conf_matrix_gb[0,0] + conf_matrix_gb[1,1])/(conf_matrix_gb[0,0] +conf_matrix_gb[0,1]+conf_matrix_gb[1,0]+conf_matrix_gb[1,1]))*100
 accuracy_dt = ((conf_matrix_dt[0,0] + conf_matrix_dt[1,1])/(conf_matrix_dt[0,0] +conf_matrix_dt[0,1]+conf_matrix_dt[1,0]+conf_matrix_dt[1,1]))*100
+accuracy_lr = ((conf_matrix_lr[0,0] + conf_matrix_lr[1,1])/(conf_matrix_lr[0,0] +conf_matrix_lr[0,1]+conf_matrix_lr[1,0]+conf_matrix_lr[1,1]))*100
+accuracy_nb = ((conf_matrix_nb[0,0] + conf_matrix_nb[1,1])/(conf_matrix_nb[0,0] +conf_matrix_nb[0,1]+conf_matrix_nb[1,0]+conf_matrix_nb[1,1]))*100
+
+
 print(accuracy_knn)
 print(accuracy_svm)
 print(accuracy_rf)
 print(accuracy_gb)
 print(accuracy_dt)
+print(accuracy_lr)
+print(accuracy_nb)
 
 ################ applying cross validation using scikit learn################
 df_X = sc.fit_transform(df_X)
@@ -135,6 +162,19 @@ conf_matrix_dt_kfold = confusion_matrix(df_Y, y_pred_kfold_dt)
 print("Confusion Matrix for Decision Tree using k-fold (leave one out)")
 print(conf_matrix_dt_kfold)
 
+#Logistic Regression
+#model_lr_1 = LogisticRegression()
+y_pred_kfold_lr = cross_val_predict(model_lr, df_X, df_Y, cv=k_fold)
+conf_matrix_lr_kfold = confusion_matrix(df_Y,y_pred_kfold_lr)
+print("Confusion Matrix for Logistic Regression using k-fold (leave one out)")
+print(conf_matrix_lr_kfold)
+
+#Naives Bayes
+model_nb_1 = GaussianNB()
+y_pred_kfold_nb = cross_val_predict(model_nb_1, df_X, df_Y, cv=k_fold)
+conf_matrix_nb_kfold = confusion_matrix(df_Y,y_pred_kfold_nb)
+print("Confusion Matrix for Naive Bayes using k-fold (leave one out)")
+print(conf_matrix_nb_kfold)
 
 ######### applying Kfold(one leave out) implementation without using library #####################
 df_X = sc.fit_transform(df_X)
@@ -151,5 +191,4 @@ for train_index, test_index in k_fold.split(df_X):
 conf_matrix_knn_kfold2 = confusion_matrix(y0, y1)
 ##print(conf_matrix_knn_kfold2)
 
-
-tree.plot_tree(model_dt)
+#tree.plot_tree(model_dt)
