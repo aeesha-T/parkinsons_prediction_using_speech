@@ -31,3 +31,7 @@ Source code for the project titled: Feature Extraction and Prediction of PD from
 2. italian.py includes the implementation of different ML models on the Italian dataset
 3. mdvr_kcl.py includes the implementation of different ML models on the Italian dataset
 
+==> Experiments
+1. Modelling/MDVR_KCL_experiments.ipynb : notebook for the experiemnts involving the MDVR_KCL dataset
+2. Modelling/Italian_experiments.ipynb : notebook for the experiemnts involving the Italian dataset
+
