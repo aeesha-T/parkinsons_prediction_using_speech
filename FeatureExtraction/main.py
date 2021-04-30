@@ -3,7 +3,7 @@ import visualization
 import pandas as pd
 
 # To extract features of a file
-#filename = "dataset/ReadText/HC/ID00_hc_0_0_0.wav"
+filename = "dataset/ReadText/HC/ID00_hc_0_0_0.wav"
 
 f = Feature_Extraction()
 #f.features = f.extract_acoustic_features(filename, 75, 100, "Hertz")
@@ -31,8 +31,8 @@ df_pd_2['label'] = 1
 
 #save the features in a .csv file
 #df_readtext = pd.concat([df_hc,df_pd])
-df_readtext_2 = pd.concat([df_hc_2, df_pd_2])
-f.convert_to_csv(df_readtext_2,"readtext_2")
+#df_readtext_2 = pd.concat([df_hc_2, df_pd_2])
+#f.convert_to_csv(df_readtext_2,"readtext_2")
 
 #visualize the sound file
-#visualization.visualize_sound_sample(filename)
+visualization.visualize_sound_sample(filename)
