@@ -112,8 +112,28 @@ class Feature_Extraction:
         sound = parselmouth.Sound(voice_sample)
         mfcc_object = sound.to_mfcc(number_of_coefficients=12) #the optimal number of coeefficient used is 12
         mfcc = mfcc_object.to_array()
+        mfcc_mean = np.mean(mfcc.T,axis=0)
+        return mfcc_mean
 
-        return mfcc
+    def extract_mfcc_from_folder(self, folder_path):
+        file_list =[]
+        mfcc_list = []
+        features = []
+        for file in glob.glob(folder_path):
+            try:
+                mfcc_per_file = self.extract_mfcc(file)
+                #print(mfcc_per_file.shape)
+                #mfcc_list.append(mfcc_for_file)
+                #file_list.append(file)
+                features.append([file, mfcc_per_file])
+            except:
+                print("error while handling file: ", file)
+        #df = pd.DataFrame(file_list, mfcc_list)
+        df = pd.DataFrame(features, columns=['voiceID','mfcc'])
+        df[['mfcc_feature0','mfcc_feature1','mfcc_feature2', 'mfcc_feature3','mfcc_feature4','mfcc_feature5', 'mfcc_feature6', 'mfcc_feature7','mfcc_feature8', 'mfcc_feature9', 'mfcc_feature10','mfcc_feature11', 'mfcc_feature12']] = pd.DataFrame(df.mfcc.to_list())
+        df = df.drop(columns=['mfcc'])
+        return df
+
 
     def extract_features_from_folder(self, folder_path):
         file_list = []
