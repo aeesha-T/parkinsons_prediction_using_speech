@@ -16,8 +16,9 @@ f = Feature_Extraction()
 #print(f.mfcc)
 
 #extract the features in the dataset folder
-main_folder = r"C:\Users\Aeesha\Downloads\ALC_Dataset\ALC"
-
+# main_folder = r"C:\Users\Aeesha\Downloads\ALC_Dataset\ALC"
+# main_folder = r"C:\Users\Aeesha\Downloads\ALC_Dataset\ALC"
+main_folder = "/home/kompalli/atoye_rd/git_repo/Research_Project/"
 #save the features in a .csv file
 
 

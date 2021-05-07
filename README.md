@@ -13,7 +13,7 @@ Source code for the project titled: Feature Extraction and Prediction of PD from
     python -m venv .venv
 
 2. Run .requirements file to install the packages
-    pip install -r requirements.txt
+    pip3 install -r requirements.txt
 
 ==> To extract the features (FeatureExtraction folder)
 1. The feature_extraction.py contains the helper functions definition used to extract features from a sound file

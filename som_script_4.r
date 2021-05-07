@@ -33,7 +33,8 @@ for (iteration in 1:iterations) {
     som_model <- som(data_train_matrix,
                   grid = som_grid, rlen = 800,
                   alpha = c(0.05, 0.01), keep.data = TRUE)
-
+    clusters_list[[iteration]] <- vector("list", total_clusters)
+    
     for (j in 1:total_clusters) {
         #store the samples in this cluster
         samples_in_cluster_i <- which(som_model$unit.classif == j)
