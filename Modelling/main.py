@@ -3,21 +3,9 @@ import visualization
 import pandas as pd
 
 # To extract features of a file
-# filename = "dataset/ReadText/HC/ID00_hc_0_0_0.wav"
-f = Feature_Extraction()
-<<<<<<< HEAD
-#f.features = f.extract_acoustic_features(filename, 75, 100, "Hertz")
-#f.mfcc = f.extract_mfcc(filename)
-#print("Acoustic features")
-#print("f0_mean, f0_std_deviation, hnr, jitter_relative, jitter_absolute, jitter_rap, jitter_ppq5, shimmer_relative, shimmer_localDb, shimmer_apq3, shimmer_apq5")
-#print (f.features)
-#print("mfcc")
-#print(f.mfcc)
-#visualize the sound file
-# visualization.visualize_sound_sample(filename)
+filename = "dataset/ReadText/HC/ID00_hc_0_0_0.wav"
 
-#extract the features in the dataset folder
-=======
+f = Feature_Extraction()
 
 ######## Testing the methods ###################
 # f.features = f.extract_acoustic_features(filename, 75, 100, "Hertz")
@@ -30,33 +18,27 @@ f = Feature_Extraction()
 
 ######################Extract the acoustic features in the dataset folder####################
 # the healthy controls dataset
-folder_hc = r"dataset/ReadText/HC/*.wav"
+folder_hc = r"dataset\ReadText\HC\*.wav"
 # the PD patients dataset
-folder_pd = r"dataset/ReadText/PD/*.wav"
-
-
+folder_pd = r"dataset\ReadText\PD\*.wav"
 # call the function to extract the features from the folder
 df_hc = f.extract_features_from_folder(folder_hc)
-#assign 0 as the label for the healthy controls
-df_hc['label'] = 0
 df_pd = f.extract_features_from_folder(folder_pd)
-#assign 1 as the label for the patients
+#df_hc_2 = f.extract_features_from_folder_2(folder_hc) #for replicating the research paper 
+
+#assign 0 as the label for the healthy controls and 1 as the label for the patients
+df_hc['label'] = 0
 df_pd['label'] = 1
-df_readtext = pd.concat([df_hc, df_pd])
+#df_pd_2 = f.extract_features_from_folder_2(folder_pd)
+#df_pd_2['label'] = 1
+
 #save the features in a .csv file
-f.convert_to_csv(df_readtext,"readtext")
 df_acoustic_features = pd.concat([df_hc,df_pd])
+#df_readtext_2 = pd.concat([df_hc_2, df_pd_2])
 f.convert_to_csv(df_acoustic_features,"MDVR_acoustic_features")
 
-
-# call the function to extract the features from the folder
-df_hc_2 = f.extract_features_from_folder_2(folder_hc) #for replicating the original ALC research paper 
-df_hc_2['label'] = 0
-df_pd_2 = f.extract_features_from_folder_2(folder_pd)
-df_pd_2['label'] = 1
-df_readtext_2 = pd.concat([df_hc_2, df_pd_2])
-f.convert_to_csv(df_readtext_2,"readtext_2")
-
+#visualize the sound file
+#visualization.visualize_sound_sample(filename)
 
 ################# Extract the mfcc ########################
 print("About to get mfcc")
