@@ -3,30 +3,34 @@ library(kohonen)
 library(gridExtra)
 library(grid)
 library(usedist)
+source("clusterSimilarityFunctions.r")
 
 #read the data
 data <- read.csv("readtext.csv")
-
+data <- read.csv("alc_features.csv")
+data <- read.csv("MDVR_all_features.csv")
+num_variables = length(data)
 #drop the first(the ID) and last(the label) column
-data_train <- data[, -c(1, 13)]
+data_train <- data[, -c(1, num_variables)]
 data_train_matrix <- as.matrix(scale(data_train))
-
+class_labels <- data[c(num_variables)]
+grid_x = 3
+grid_y = 2
 #Specify the grid to use in the SOM model
-som_grid <- somgrid(xdim = 3, ydim = 3, topo = "hexagonal")
+som_grid <- somgrid(xdim = grid_x, ydim = grid_y, topo = "hexagonal")
 
 #print(som_model$grid$pts[1, ]) #prints row 1 and col 2 in the pts table
 
 #declare the number of iterations
 iterations <- 5
 #declare the total number of clusters whihc is xdim*ydim
-total_clusters <- 9
+total_clusters <- grid_x * grid_y
 
 #create the clusterDetails class with samples_in_cluster and cluster_centroid as properties
 setClass("clusterDetails", slots = list(samples_in_cluster = "integer",
                                         cluster_centroid = "numeric"))
 clusters_list <- vector("list", iterations)
-SSE <- vector("list", total_clusters)
-diff <- vector("list", total_clusters)
+
 #Loop through iterations
 for (iteration in 1:iterations) {
     #som training
@@ -51,63 +55,9 @@ for (iteration in 1:iterations) {
 }
 print("Done1")
 
-result_table <- NULL
-for (clust in 1:total_clusters) {
-    print(paste("cluster no:", clust, sep = ""))
-    SSE[[clust]] <- 0
-    diff[[clust]] <- 0
-    #retrieve the centroid for this cluster in iteration 1
-    center <- clusters_list[[1]][[clust]]@cluster_centroid
-    #retrieve the samples in this cluster in iteration 1
-    samples_in_cluster_iter1 <- clusters_list[[1]][[clust]]@samples_in_cluster
-    for (j in 2:iterations) {
-        min_dist <- 10000
-        print(paste("Iteration: ", j, sep = ""))
-        for (k in 1:total_clusters) {
-            #find the dist between this cluster in iteration 1 and all clusters in iteration 2
-            center2 <- clusters_list[[j]][[k]]@cluster_centroid
-            d <- dist(rbind(center, center2))
-            dist <- d[1]
-            print(paste("We are checking iteration 1 and cluster ",
-            clust, " with iteration ", j, " and cluster ", k,
-             ". The dist is: ", dist, sep = ""))
-            if (dist < min_dist) {
-                min_dist <- dist
-                min_clust_index <- k
-            }
-            print(paste("d min dist at this point is: ", min_dist, sep = ""))
-        }
-        print(paste("The final min dist is ", min_dist,
-        " and the index is ", min_clust_index, sep = ""))
-
-        SSE[[clust]] <- SSE[[clust]] + min_dist
-        print(paste("SSE for cluster ", clust,
-         " in iteration 1 with the closest cluster at iteration ",
-         j, " is ", SSE[[clust]], sep = ""))
-        #get the cluster details of the closest cluster using the index saved above
-        samples_in_closest_cluster <-
-        clusters_list[[j]][[min_clust_index]]@samples_in_cluster
-        #get the no of samples that are different between the cluster data
-        #samples in first clust but not in second
-        a <- length(setdiff(samples_in_cluster_iter1,
-                            samples_in_closest_cluster))
-        #samples in second clust but not in first
-        b <- length(setdiff(samples_in_closest_cluster,
-                            samples_in_cluster_iter1))
-        diff[[clust]] <-  diff[[clust]] + a + b
-        print(paste("Diff for cluster ", clust,
-        " in iteration 1 with the closest cluster at iteration ",
-         j, " is ", a + b, sep = ""))
-        print("SAMPLES IN THE CLUSTER ")
-        print(samples_in_cluster_iter1)
-        print(samples_in_closest_cluster)
-    }
-    ss_error <- SSE[[clust]]
-    diff_in_samples <- diff[[clust]]
-    #populate the result_table
-    result_table <- rbind(result_table,
-                            data.frame(clust, ss_error, diff_in_samples))
-}
+#result_table=findSimilarClusters(clusters_list, total_clusters, iterations);
+checkIfClusterHasSameLabels(clusters_list, class_labels, total_clusters, iterations)
+result_table = findSimilarClustersUsingClassLabels(clusters_list, class_labels, total_clusters, iterations);
 
 #calculate average
 sse_avg <- mean(result_table[["ss_error"]])

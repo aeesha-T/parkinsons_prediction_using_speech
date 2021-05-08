@@ -9,6 +9,7 @@ import parselmouth
 from parselmouth.praat import call
 import glob
 import os.path
+from datetime import datetime
 
 class Feature_Extraction:
     """
@@ -119,10 +120,12 @@ class Feature_Extraction:
         file_list =[]
         mfcc_list = []
         features = []
+        curr_time = datetime.now()
+        print("Entering extract_mfcc_from_folder, time:", curr_time)
         for file in glob.glob(folder_path):
             try:
+                #print("Processing file:", file)
                 mfcc_per_file = self.extract_mfcc(file)
-                #print(mfcc_per_file.shape)
                 #mfcc_list.append(mfcc_for_file)
                 #file_list.append(file)
                 features.append([file, mfcc_per_file])
@@ -148,9 +151,10 @@ class Feature_Extraction:
         localdbShimmer_list = []
         apq3Shimmer_list = []
         aqpq5Shimmer_list = []
-        print("Entering extract_features_from_folder")
+        curr_time = datetime.now()
+        print("Entering extract_features_from_folder, time:", curr_time)
         for file in glob.glob(folder_path):
-            print(file)
+            #print("extract_features_from_folder: ", file)
             try:
                 (meanF0, stdevF0, hnr, localJitter, localabsoluteJitter, rapJitter, ppq5Jitter, localShimmer, localdbShimmer, apq3Shimmer, aqpq5Shimmer) = self.extract_acoustic_features(file, 75, 500, "Hertz") 
                 file_list.append(file) # make an ID list
@@ -185,9 +189,10 @@ class Feature_Extraction:
         apq3Shimmer_list = []
         aqpq5Shimmer_list = []
         ddaShimmer_list = []
-        print("Entering extract_features_from_folder_2")
+        curr_time = datetime.now()
+        print("Entering extract_features_from_folder_2, time:", curr_time)
         for file in glob.glob(folder_path):
-            print(file)
+            #print("extract_features_from_folder_2", file)
             (meanF0, maxF0, minF0, localJitter, localabsoluteJitter, rapJitter, ddpJitter, localShimmer, localdbShimmer, apq3Shimmer, aqpq5Shimmer, ddaShimmer, hnr) = self.extract_acoustic_features_2(file, 75, 500, "Hertz") 
             file_list.append(file) # make an ID list
             mean_F0_list.append(meanF0) # make a mean F0 list

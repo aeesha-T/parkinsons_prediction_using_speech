@@ -5,7 +5,6 @@ import pandas as pd
 # To extract features of a file
 # filename = "dataset/ReadText/HC/ID00_hc_0_0_0.wav"
 f = Feature_Extraction()
-<<<<<<< HEAD
 #f.features = f.extract_acoustic_features(filename, 75, 100, "Hertz")
 #f.mfcc = f.extract_mfcc(filename)
 #print("Acoustic features")
@@ -17,7 +16,6 @@ f = Feature_Extraction()
 # visualization.visualize_sound_sample(filename)
 
 #extract the features in the dataset folder
-=======
 
 ######## Testing the methods ###################
 # f.features = f.extract_acoustic_features(filename, 75, 100, "Hertz")
