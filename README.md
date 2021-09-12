@@ -1,6 +1,6 @@
 # Research_Project
 
-Source code for the project titled: Feature Extraction and Prediction of PD from Speech Data using Machine Learning 
+Source code for the project titled: Machine Learning Approaches to Predict Parkinson’s Disease using Speech Signals
 
 ==> MDVR-KCL Dataset
 1. The dataset is stored in the dataset folder. 
@@ -32,6 +32,6 @@ Source code for the project titled: Feature Extraction and Prediction of PD from
 3. mdvr_kcl.py includes the implementation of different ML models on the Italian dataset
 
 ==> Experiments
-1. Modelling/MDVR_KCL_experiments.ipynb : notebook for the experiemnts involving the MDVR_KCL dataset
-2. Modelling/Italian_experiments.ipynb : notebook for the experiemnts involving the Italian dataset
+1. Modelling/MDVR_KCL_experiments.ipynb : notebook for the experiments involving the MDVR_KCL dataset
+2. Modelling/Italian_experiments.ipynb : notebook for the experiments involving the Italian dataset
 
