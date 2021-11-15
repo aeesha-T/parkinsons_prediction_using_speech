@@ -42,9 +42,9 @@ df_pd = f.extract_features_from_folder(folder_pd)
 df_pd['label'] = 1
 df_readtext = pd.concat([df_hc, df_pd])
 #save the features in a .csv file
-f.convert_to_csv(df_readtext,"readtext")
+#f.convert_to_csv(df_readtext,"readtext")
 df_acoustic_features = pd.concat([df_hc,df_pd])
-f.convert_to_csv(df_acoustic_features,"MDVR_acoustic_features")
+#f.convert_to_csv(df_acoustic_features,"MDVR_acoustic_features")
 
 
 # call the function to extract the features from the folder
@@ -53,7 +53,7 @@ df_hc_2['label'] = 0
 df_pd_2 = f.extract_features_from_folder_2(folder_pd)
 df_pd_2['label'] = 1
 df_readtext_2 = pd.concat([df_hc_2, df_pd_2])
-f.convert_to_csv(df_readtext_2,"readtext_2")
+#f.convert_to_csv(df_readtext_2,"readtext_2")
 
 
 ################# Extract the mfcc ########################
@@ -63,7 +63,7 @@ df_mfcc_hc['label'] = 0
 df_mfcc_pd = f.extract_mfcc_from_folder(folder_pd)
 df_mfcc_pd['label'] = 1
 df_mfcc_features = pd.concat([df_mfcc_hc,df_mfcc_pd])
-f.convert_to_csv(df_mfcc_features, "MDVR_mfcc_features")
+#f.convert_to_csv(df_mfcc_features, "MDVR_mfcc_features")
 print(df_mfcc_features.head())
 print("Done")
 

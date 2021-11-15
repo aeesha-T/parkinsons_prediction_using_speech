@@ -66,17 +66,56 @@ def extract_features_from_chunks(folder_path, label):
     df_all['label'] = label
     return df_all
 
-
-#run the splitting code
-split_into_chunks()
+def extract_mfccfeatures_from_chunks(folder_path, label):
+    #folder_path = r"dataset\MDVR\HC"
+    df_all = []
+    for root, dirs, files in os.walk(folder_path):
+        for dir in dirs:
+            folder_path = os.path.join(root, dir)
+            folder_path = r'%s' % folder_path + "\*.wav"
+            print(folder_path)
+            df_hc = f.extract_mfcc_from_folder(folder_path)
+            #print(df_hc)
+            df_all.append(df_hc)
+            #print(df_all_hc)
+    # call the function to extract the features from the folder
+    df_all = pd.concat(df_all)
+    df_all['label'] = label
+    return df_all
 
 #extract the features
-hc = extract_features_from_chunks(r"dataset\MDVR\HC", 0)
-pd_1 = extract_features_from_chunks(r"dataset\MDVR\PD", 1)
-df_acoustic_features = pd.concat([hc,pd_1])
-f.convert_to_csv(df_acoustic_features,"MDVR_acoustic_features_chunks")
+def acoustic_features():
+    hc = extract_features_from_chunks(r"dataset\MDVR\HC", 0)
+    pd_1 = extract_features_from_chunks(r"dataset\MDVR\PD", 1)
+    df_acoustic_features = pd.concat([hc,pd_1])
+    f.convert_to_csv(df_acoustic_features,"MDVR_acoustic_features_chunks")
+    return df_acoustic_features
 
+def mfcc_features():
+    print("Start")
+    hc = extract_mfccfeatures_from_chunks(r"dataset\MDVR\HC", 0)
+    pd_1 = extract_mfccfeatures_from_chunks(r"dataset\MDVR\PD", 1)
+    df_mfcc_features = pd.concat([hc,pd_1])
+    f.convert_to_csv(df_mfcc_features,"MDVR_mfcc_features_chunks")
+    print("End")
+    return df_mfcc_features
+
+#run the splitting code
+#split_into_chunks()
+# x = "dataset\MDVR\HC\ID00\*.wav"
+# df_hc = f.extract_mfcc_from_folder(x)
+# print(df_hc)
     
+#mfcc_features()
 
+##################### Combine the both acoustic features and MFCC in a csv file##################
+#drop the label from the aocustic features table
+#df_acoustic_features_2 = acoustic_features().drop(columns = ['label'])
+#drop the voiceID from the mfcc table
+#df_mfcc_features_2 = mfcc_features().drop(columns =['voiceID'])
+#df_all_features = pd.concat([df_acoustic_features_2, df_mfcc_features_2], axis=1)
+df_all_features = pd.merge(acoustic_features(), mfcc_features(), how="left", on="voiceID")
+f.convert_to_csv(df_all_features, "MDVR_all_features_chunks")
+print(df_all_features)
 
    
